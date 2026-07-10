@@ -1,0 +1,6 @@
+# robots.txt for https://theprem.vercel.app/
+
+User-agent: *
+Allow: /
+
+Sitemap: https://theprem.vercel.app/sitemap.xml
