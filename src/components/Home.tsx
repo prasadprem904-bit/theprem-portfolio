@@ -293,31 +293,40 @@ function ProductCard({ p, i }: { p: Product; i: number }) {
   return (
     <motion.a
       ref={ref}
-      href="#"
+      href={p.url}
+      target="_blank"
+      rel="noopener noreferrer"
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative flex flex-col rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]"
+      className="group relative flex cursor-pointer flex-col rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-[var(--shadow-lift)]"
     >
       <div className="flex items-start gap-4">
-        <div
-          className="flex h-12 w-12 items-center justify-center rounded-2xl"
-          style={{ backgroundColor: p.tint }}
-        >
-          <p.Icon className="h-6 w-6 text-foreground" strokeWidth={1.75} />
+        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl border border-border bg-muted shadow-[var(--shadow-soft)]">
+          <img
+            src={p.logo}
+            alt={`${p.name} logo`}
+            width={512}
+            height={512}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className="font-display text-lg font-semibold text-foreground">{p.name}</h3>
+          <h3 className="truncate font-display text-lg font-semibold text-foreground">{p.name}</h3>
           <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
         </div>
       </div>
       <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
         <span className="inline-flex items-center gap-2 rounded-full bg-[oklch(0.96_0.05_155)] px-3 py-1 text-xs font-semibold text-[oklch(0.45_0.15_155)]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[oklch(0.6_0.17_152)]" />
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[oklch(0.6_0.17_152)] opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[oklch(0.6_0.17_152)]" />
+          </span>
           {p.status}
         </span>
-        <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary transition-transform group-hover:translate-x-0.5">
-          Open <ArrowRight className="h-4 w-4" />
+        <span className="inline-flex items-center gap-1 text-sm font-semibold text-primary">
+          Open <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
         </span>
       </div>
     </motion.a>
@@ -332,19 +341,19 @@ function BetaAndBuilding() {
         <BigCard
           eyebrow="Beta"
           title="TryOnix"
-          desc="AI virtual try-on platform for a better shopping experience."
+          desc="AI virtual try-on for a better shopping experience."
           badge={{ text: "Beta", tone: "warning" }}
-          Icon={Shirt}
-          tint="oklch(0.95 0.05 300)"
+          logo={logoTryOnix}
+          url="https://aitryonix.vercel.app/"
           cta="Try Beta"
         />
         <BigCard
           eyebrow="Currently Building"
           title="Buzz"
-          desc="A modern news and media platform bringing trends together in one place."
+          desc="News, trends and updates in one place."
           badge={{ text: "In Development", tone: "danger" }}
-          Icon={Megaphone}
-          tint="oklch(0.95 0.05 25)"
+          logo={logoBuzz}
+          url="https://buzzofficial.vercel.app/"
           cta="Coming Soon"
           wip
         />
@@ -358,8 +367,8 @@ function BigCard({
   title,
   desc,
   badge,
-  Icon,
-  tint,
+  logo,
+  url,
   cta,
   wip = false,
 }: {
@@ -367,8 +376,8 @@ function BigCard({
   title: string;
   desc: string;
   badge: { text: string; tone: "warning" | "danger" };
-  Icon: typeof Sparkles;
-  tint: string;
+  logo: string;
+  url: string;
   cta: string;
   wip?: boolean;
 }) {
@@ -385,18 +394,22 @@ function BigCard({
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="relative flex flex-col justify-between rounded-3xl border border-border bg-card p-7 shadow-[var(--shadow-soft)]"
+      className="group relative flex flex-col justify-between rounded-3xl border border-border bg-card p-7 shadow-[var(--shadow-soft)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[var(--shadow-lift)]"
     >
       <div>
         <div className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
           {eyebrow}
         </div>
         <div className="mt-4 flex items-start gap-5">
-          <div
-            className="flex h-16 w-16 items-center justify-center rounded-2xl"
-            style={{ backgroundColor: tint }}
-          >
-            <Icon className="h-8 w-8 text-foreground" strokeWidth={1.5} />
+          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-border bg-muted shadow-[var(--shadow-soft)]">
+            <img
+              src={logo}
+              alt={`${title} logo`}
+              width={512}
+              height={512}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-3">
@@ -434,13 +447,20 @@ function BigCard({
       </div>
 
       <div className="mt-8">
-        <button
-          disabled={wip}
-          className="group inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition-all enabled:hover:-translate-y-0.5 disabled:opacity-70"
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background transition-all hover:-translate-y-0.5 hover:bg-primary"
         >
           {cta}
-          {!wip && <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />}
-        </button>
+          <ArrowRight className="h-4 w-4 transition-transform duration-300 hover:translate-x-1" />
+        </a>
+        {wip && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            Opens the preview site — Buzz is currently under active development.
+          </p>
+        )}
       </div>
     </motion.div>
   );
