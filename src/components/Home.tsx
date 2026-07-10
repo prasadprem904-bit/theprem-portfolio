@@ -4,14 +4,6 @@ import { useRef } from "react";
 import {
   ArrowRight,
   Sparkles,
-  Camera,
-  Baby,
-  Landmark,
-  Calculator,
-  TrendingUp,
-  Droplet,
-  Shirt,
-  Megaphone,
   BarChart3,
   Code2,
   Box,
@@ -27,6 +19,15 @@ import {
   FlaskConical,
 } from "lucide-react";
 import portrait from "@/assets/prem-portrait.png";
+import logoCoreAI from "@/assets/logos/coreai.png";
+import logoShot from "@/assets/logos/shot.png";
+import logoNaamSutra from "@/assets/logos/naamsutra.png";
+import logoSarkari from "@/assets/logos/sarkari.png";
+import logoCalcPro from "@/assets/logos/calcpro.png";
+import logoBusinessGrowth from "@/assets/logos/businessgrowth.png";
+import logoSip from "@/assets/logos/sip.png";
+import logoTryOnix from "@/assets/logos/tryonix.png";
+import logoBuzz from "@/assets/logos/buzz.png";
 
 const NAV = [
   { label: "Home", href: "#home" },
@@ -40,19 +41,19 @@ const NAV = [
 type Product = {
   name: string;
   desc: string;
-  Icon: typeof Sparkles;
-  tint: string;
+  logo: string;
+  url: string;
   status: "Live";
 };
 
 const PRODUCTS: Product[] = [
-  { name: "CoreAI", desc: "AI assistant for everyday work.", Icon: Sparkles, tint: "oklch(0.95 0.05 165)", status: "Live" },
-  { name: "Shot", desc: "Photography platform for creators.", Icon: Camera, tint: "oklch(0.95 0.03 250)", status: "Live" },
-  { name: "NaamSutra", desc: "Beautiful baby names, curated.", Icon: Baby, tint: "oklch(0.96 0.04 30)", status: "Live" },
-  { name: "Sarkari Sahayak", desc: "Government services made simple.", Icon: Landmark, tint: "oklch(0.95 0.04 80)", status: "Live" },
-  { name: "CalcPro", desc: "Smart calculator for every task.", Icon: Calculator, tint: "oklch(0.95 0.04 290)", status: "Live" },
-  { name: "BusinessGrowth", desc: "Toolkit to grow your business.", Icon: TrendingUp, tint: "oklch(0.95 0.05 155)", status: "Live" },
-  { name: "Sip", desc: "Gentle water reminders, daily.", Icon: Droplet, tint: "oklch(0.95 0.04 230)", status: "Live" },
+  { name: "CoreAI", desc: "AI assistant for everyone.", logo: logoCoreAI, url: "https://coreaii.vercel.app/", status: "Live" },
+  { name: "Shot", desc: "Perfect photography, made simple.", logo: logoShot, url: "https://your-perfect-shot-five.vercel.app/", status: "Live" },
+  { name: "NaamSutra", desc: "Beautiful names for your little ones.", logo: logoNaamSutra, url: "https://naamsutra.vercel.app/", status: "Live" },
+  { name: "Sarkari Sahayak", desc: "Your guide for all government services.", logo: logoSarkari, url: "https://sarkari-sahayak-guide.vercel.app/", status: "Live" },
+  { name: "CalcPro", desc: "Smart calculator for every calculation.", logo: logoCalcPro, url: "https://calcproapp.vercel.app/", status: "Live" },
+  { name: "BusinessGrowth", desc: "Tools to grow your business.", logo: logoBusinessGrowth, url: "https://bussinessgrowth.vercel.app/", status: "Live" },
+  { name: "Sip", desc: "Stay hydrated, stay healthy.", logo: logoSip, url: "https://sipwaterreminder.vercel.app/", status: "Live" },
 ];
 
 const STATS = [
