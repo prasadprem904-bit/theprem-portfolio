@@ -93,13 +93,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "ThePrem" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "ThePrem | Building Products People Love" },
+      { name: "twitter:description", content: "Official website of Prem Prasad showcasing AI products, productivity tools, and digital experiences built under ThePrem." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/37004696-0e4d-4ee1-8b67-bb48b6fc2c6e/id-preview-ddab1c90--49d7b53c-273d-46ee-9c83-bbd0f6602f1a.lovable.app-1783762352871.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/37004696-0e4d-4ee1-8b67-bb48b6fc2c6e/id-preview-ddab1c90--49d7b53c-273d-46ee-9c83-bbd0f6602f1a.lovable.app-1783762352871.png" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
