@@ -59,7 +59,7 @@ const PRODUCTS: Product[] = [
 const STATS = [
   { value: "9+", label: "Products", Icon: Package },
   { value: "7", label: "Live Products", Icon: ShieldCheck },
-  { value: "1", label: "Beta Product", Icon: FlaskConical },
+  { value: "2", label: "In Development", Icon: FlaskConical },
   { value: "100%", label: "Independently Built", Icon: Heart },
 ];
 
@@ -339,13 +339,14 @@ function BetaAndBuilding() {
     <Section id="labs" className="border-t border-border">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <BigCard
-          eyebrow="Beta"
+          eyebrow="Currently Building"
           title="TryOnix"
           desc="AI virtual try-on for a better shopping experience."
-          badge={{ text: "Beta", tone: "warning" }}
+          badge={{ text: "In Development", tone: "danger" }}
           logo={logoTryOnix}
           url="https://aitryonix.vercel.app/"
-          cta="Try Beta"
+          cta="Coming Soon"
+          wip
         />
         <BigCard
           eyebrow="Currently Building"
