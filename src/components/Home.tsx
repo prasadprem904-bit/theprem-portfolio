@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useVisitorTracking } from "@/hooks/use-visitor-tracking";
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useInView } from "framer-motion";
 import { useRef } from "react";
 import {

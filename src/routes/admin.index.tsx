@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getAdminStats } from "@/lib/admin.functions";
 import {
   Area,
   AreaChart,
@@ -14,9 +17,9 @@ import {
 import {
   ArrowDownRight,
   ArrowUpRight,
-  DollarSign,
+  Eye,
   Users,
-  ShoppingCart,
+  UserCheck,
   Activity,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -26,20 +29,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 export const Route = createFileRoute("/admin/")({
   component: DashboardPage,
 });
-
-const stats = [
-  { label: "Revenue", value: "$48,290", delta: "+12.4%", positive: true, icon: DollarSign },
-  { label: "Active users", value: "12,840", delta: "+3.2%", positive: true, icon: Users },
-  { label: "Orders", value: "1,204", delta: "-1.8%", positive: false, icon: ShoppingCart },
-  { label: "Uptime", value: "99.98%", delta: "+0.02%", positive: true, icon: Activity },
-];
-
-const revenue = [
-  { m: "Jan", v: 12400 }, { m: "Feb", v: 15200 }, { m: "Mar", v: 14100 },
-  { m: "Apr", v: 17800 }, { m: "May", v: 21500 }, { m: "Jun", v: 24800 },
-  { m: "Jul", v: 27600 }, { m: "Aug", v: 31200 }, { m: "Sep", v: 35400 },
-  { m: "Oct", v: 39800 }, { m: "Nov", v: 44200 }, { m: "Dec", v: 48290 },
-];
 
 const channels = [
   { c: "Organic", v: 42 }, { c: "Direct", v: 28 }, { c: "Referral", v: 18 },
@@ -55,11 +44,51 @@ const activity = [
 ];
 
 function DashboardPage() {
+  const fn = useServerFn(getAdminStats);
+  const { data } = useQuery({
+    queryKey: ["admin-stats"],
+    queryFn: () => fn(),
+    refetchInterval: 30000,
+  });
+
+  const stats = [
+    {
+      label: "Total users",
+      value: (data?.totalUsers ?? 0).toLocaleString(),
+      delta: "signed up",
+      positive: true,
+      icon: Users,
+    },
+    {
+      label: "Total page views",
+      value: (data?.totalViews ?? 0).toLocaleString(),
+      delta: "all time",
+      positive: true,
+      icon: Eye,
+    },
+    {
+      label: "Unique visitors (30d)",
+      value: (data?.uniqueVisitors30d ?? 0).toLocaleString(),
+      delta: "last 30 days",
+      positive: true,
+      icon: UserCheck,
+    },
+    {
+      label: "Uptime",
+      value: "99.98%",
+      delta: "+0.02%",
+      positive: true,
+      icon: Activity,
+    },
+  ];
+
+  const trend = data?.trend ?? [];
+
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">Welcome back. Here's what's happening today.</p>
+        <p className="text-sm text-muted-foreground">Live traffic and user metrics for theprem.io.</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -94,12 +123,12 @@ function DashboardPage() {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Revenue</CardTitle>
-            <CardDescription>Monthly revenue trend for the past year</CardDescription>
+            <CardTitle>Website visitors</CardTitle>
+            <CardDescription>Page views per day, last 14 days</CardDescription>
           </CardHeader>
           <CardContent className="h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={revenue} margin={{ left: 0, right: 8, top: 8 }}>
+              <AreaChart data={trend} margin={{ left: 0, right: 8, top: 8 }}>
                 <defs>
                   <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="var(--color-primary)" stopOpacity={0.35} />
@@ -107,7 +136,7 @@ function DashboardPage() {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
-                <XAxis dataKey="m" tick={{ fontSize: 12 }} stroke="var(--color-muted-foreground)" axisLine={false} tickLine={false} />
+                <XAxis dataKey="d" tick={{ fontSize: 12 }} stroke="var(--color-muted-foreground)" axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 12 }} stroke="var(--color-muted-foreground)" axisLine={false} tickLine={false} width={40} />
                 <RTooltip
                   contentStyle={{
