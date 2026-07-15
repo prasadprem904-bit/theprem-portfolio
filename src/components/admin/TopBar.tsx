@@ -3,7 +3,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
@@ -19,6 +19,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useTheme } from "@/hooks/use-theme";
+import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 const notifications = [
@@ -29,6 +32,28 @@ const notifications = [
 
 export function TopBar() {
   const { theme, toggle } = useTheme();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const email = user?.email ?? "";
+  const displayName =
+    (user?.user_metadata as any)?.full_name ??
+    (user?.user_metadata as any)?.name ??
+    email.split("@")[0] ??
+    "Admin";
+  const initials = displayName
+    .split(" ")
+    .map((s: string) => s[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+  const avatarUrl = (user?.user_metadata as any)?.avatar_url as string | undefined;
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    toast.success("Signed out");
+    navigate({ to: "/auth" });
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b bg-background/80 px-3 backdrop-blur sm:px-4">
@@ -104,17 +129,20 @@ export function TopBar() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="ml-1 h-9 gap-2 px-2">
               <Avatar className="h-7 w-7">
+                {avatarUrl && <AvatarImage src={avatarUrl} alt={displayName} />}
                 <AvatarFallback className="bg-primary text-primary-foreground text-xs">
-                  PP
+                  {initials || "A"}
                 </AvatarFallback>
               </Avatar>
-              <span className="hidden text-sm font-medium sm:inline">Prem</span>
+              <span className="hidden max-w-[120px] truncate text-sm font-medium sm:inline">
+                {displayName}
+              </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
-              <div className="text-sm font-medium">Prem Prasad</div>
-              <div className="text-xs font-normal text-muted-foreground">prem@theprem.io</div>
+              <div className="truncate text-sm font-medium">{displayName}</div>
+              <div className="truncate text-xs font-normal text-muted-foreground">{email}</div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
@@ -129,7 +157,7 @@ export function TopBar() {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="text-destructive focus:text-destructive"
-              onSelect={() => toast("Signed out")}
+              onSelect={signOut}
             >
               <LogOut className="mr-2 h-4 w-4" /> Log out
             </DropdownMenuItem>
